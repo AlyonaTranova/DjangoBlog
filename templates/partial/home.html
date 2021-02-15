@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+{% block head %}
+<title>Главная</title>
+<meta name="description" content="Главная страница блога"/>
+<meta name="keywords" content="блог"/>
+{% endblock %}
+ 
+{% block body %}
+  <h1 style="color: darkred; text-align: center;">Personal blog</h1>
+  {% if not posts %}
+  <b>Статьи не найдены</b>
+  {% else %}
+    {% for obj in posts %}
+    <div style="display: flex; flex-direction: column;">
+      <a style="text-decoration: none; margin-bottom: 18px; font-size: 20px;" href="{{ obj.get_absolute_url }}"><b>{{ obj.title }}</b></a>
+      <img src="{{ obj.image.url }}" alt="" style="width: 700px;">
+      <p style="padding-bottom: 40px; padding-top: 10px; border-bottom: 1px black solid;">{{ obj.content|truncatechars:200 }}</p>
+      <span>{{ obj.timestamp | date:"SHORT_DATE_FORMAT"}}</span>
+      <br><br><br>
+    </div>
+
+    {% endfor %}
+  {% endif %}
+ 
+  {% if posts.has_previous %}
+  <a href="?page={{ posts.previous_page_number }}">Назад</a>
+  {% endif %}
+  {% if posts.has_next %}
+  <a href="?page={{ posts.next_page_number }}" >Вперед</a>
+  {% endif %}
+{% endblock %}
