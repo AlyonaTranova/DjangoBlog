@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'board/blog.css' %}">
+    <title>{{ object.title }}</title>
+</head>
+<body>
+<h2>{{ object.title }}</h2>
+<p>
+    {{ object.description }}
+</p>
+<div>
+    {{ object.content }}
+</div>
+<p>
+   {{ object.keywords }}
+</p>
+<p>
+    дата публикации: {{ object.publish_date }}
+</p>
+<br><br>
+<p>
+    Количество просмотров: {{ object.views_count }}
+</p>
+{% if news.comments.all %}
+<ul>
+    {% for comment in news.comments.all %}
+    <li style="list-style-type: none;">
+        <p style="font-size: 14px; color: #ff5050">автор: {{ comment.user_name }}, опубликован: {{ comment.created }}</p>
+
+        <p style="font-size: 16px">{{ comment.comment }}</p>
+
+        <p>{{ comment.new_context }}</p>
+
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Комментариев нет. Добавьте свой комментарий. </p>
+{% endif %}
+<br>
+<form action="/blog/{{ object.id }}" method="post">
+    {% csrf_token %}
+    {{ commentform.as_p }}
+    <button type="submit">Отправить</button>
+</form>
+<br><br><br>
+<a href="/">Вернуться к списку статей</a><br>
+</body>
